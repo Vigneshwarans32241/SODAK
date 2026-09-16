@@ -1,0 +1,19 @@
+# Environments and secrets
+**/.env
+**/.venv/
+**/venv/
+
+# Python cache
+**/__pycache__/
+**/*.pyc
+
+# OS & IDE
+.DS_Store
+.vscode/
+*.db
+
+# Archives
+*.zip
+
+# Legacy folder
+sodak-day1/
