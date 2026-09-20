@@ -1,0 +1,8 @@
+# Production & Multi-Agent Dependencies
+sqlalchemy>=2.0.30
+psycopg2-binary>=2.9.9
+pydantic>=2.7.0
+python-dotenv>=1.0.1
+rich>=13.7.0
+duckdb>=1.0.0
+pytest>=8.0.0
