@@ -14,30 +14,30 @@ from tools import get_student_info, get_student_marks, calculator, get_passing_r
 
 def test_tools_offline():
     """Validates all 4 tools independently without requiring API calls."""
-    print("[*] Testing Tool 1: get_student_info('22CS045')...")
+    print("[*] Testing Tool 1: get_student_info('22CS045')...", flush=True)
     info = get_student_info.invoke({"student_id": "22CS045"})
     assert info["name"] == "Dhanushya"
     assert info["department"] == "Computer Science"
-    print("    [PASS] Result:", info)
+    print("    [PASS] Result:", info, flush=True)
 
-    print("[*] Testing Tool 2: get_student_marks('22CS047')...")
+    print("[*] Testing Tool 2: get_student_marks('22CS047')...", flush=True)
     marks = get_student_marks.invoke({"student_id": "22CS047"})
     assert marks["python"] == 92
     assert marks["database"] == 88
     assert marks["ai"] == 95
     assert marks["web"] == 90
-    print("    [PASS] Result:", marks)
+    print("    [PASS] Result:", marks, flush=True)
 
-    print("[*] Testing Tool 3: calculator('(85 + 72 + 90 + 78) / 4')...")
+    print("[*] Testing Tool 3: calculator('(85 + 72 + 90 + 78) / 4')...", flush=True)
     avg = calculator.invoke({"expression": "(85 + 72 + 90 + 78) / 4"})
     assert float(avg) == 81.25
-    print("    [PASS] Result:", avg)
+    print("    [PASS] Result:", avg, flush=True)
 
-    print("[*] Testing Tool 4: get_passing_rules()...")
+    print("[*] Testing Tool 4: get_passing_rules()...", flush=True)
     rules = get_passing_rules.invoke({})
     assert "40%" in rules and "35%" in rules
-    print("    [PASS] Result: University Rules Verified")
-    print("\n[SUCCESS] All 4 LangChain Tools passed local verification!\n")
+    print("    [PASS] Result: University Rules Verified", flush=True)
+    print("\n[SUCCESS] All 4 LangChain Tools passed local verification!\n", flush=True)
 
 def run_all_questions():
     """Runs all 4 required questions + challenge question through the agent."""
@@ -46,8 +46,8 @@ def run_all_questions():
     try:
         agent_executor = create_student_agent()
     except ValueError as e:
-        print(f"[Notice] {e}")
-        print("Skipping online LLM inference. To test live, export GEMINI_API_KEY='your-key'")
+        print(f"[Notice] {e}", flush=True)
+        print("Skipping online LLM inference. To test live, export GEMINI_API_KEY='your-key'", flush=True)
         return
 
     questions = [

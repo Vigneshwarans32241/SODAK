@@ -23,7 +23,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from database import init_students_db
 from tools import get_student_info, get_student_marks, calculator, get_passing_rules
 
-def create_student_agent(api_key: str = None, model_name: str = "gemini-1.5-flash"):
+def create_student_agent(api_key: str = None, model_name: str = None):
     """
     Creates and returns a LangChain AgentExecutor powered by Gemini and the 4 student tools.
     """
@@ -37,9 +37,9 @@ def create_student_agent(api_key: str = None, model_name: str = "gemini-1.5-flas
         )
 
     # Initialize Gemini LLM with zero temperature for deterministic reasoning
+    target_model = model_name or os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
     llm = ChatGoogleGenerativeAI(
-        model=model_name,
-        temperature=0.0,
+        model=target_model,
         google_api_key=gemini_key
     )
 
@@ -91,7 +91,10 @@ def ask_agent(agent_executor, question: str):
     else:
         print("  (No tools required)")
         
-    print(f"\n[Final Answer]:\n{response['output']}")
+    out = response.get("output", "")
+    if isinstance(out, list) and len(out) > 0 and isinstance(out[0], dict) and "text" in out[0]:
+        out = out[0]["text"]
+    print(f"\n[Final Answer]:\n{out}")
     print("=" * 75 + "\n")
     return response
 
