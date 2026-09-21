@@ -1,0 +1,167 @@
+## Problem Statement
+
+You are given a SQLite database containing student information and marks.
+
+Build a **LangChain Agent** using Gemini that can answer student-related questions by selecting and using the appropriate tools.
+
+### Database
+
+Create a database named `students.db` with the following table:
+
+**students**
+
+| student_id | name      | department             | python | database | ai | web |
+| ---------- | --------- | ---------------------- | -----: | -------: | -: | --: |
+| 22CS045    | Dhanushya | Computer Science       |     85 |       72 | 90 |  78 |
+| 22CS046    | Rahul     | Computer Science       |     65 |       70 | 68 |  72 |
+| 22CS047    | Priya     | Information Technology |     92 |       88 | 95 |  90 |
+| 22CS048    | Arun      | Information Technology |     55 |       60 | 58 |  62 |
+| 22CS049    | Meena     | Computer Science       |     78 |       85 | 80 |  88 |
+
+### Required Tools
+
+Create the following LangChain tools:
+
+**1. `get_student_info(student_id)`**
+
+Returns:
+
+* Student name
+* Department
+
+**2. `get_student_marks(student_id)`**
+
+Returns:
+
+* Python mark
+* Database mark
+* AI mark
+* Web mark
+
+**3. `calculator(expression)`**
+
+Used to calculate:
+
+* Total marks
+* Average marks
+
+**4. `get_passing_rules()`**
+
+Returns the university rules:
+
+* Minimum overall average: 40%
+* Minimum mark in each subject: 35%
+
+### Agent Requirements
+
+Create a LangChain agent with Gemini and all four tools.
+
+The agent should decide which tools are required based on the user's question.
+
+For example:
+
+**Question 1**
+
+> What is the name and department of student 22CS045?
+
+Expected tools:
+
+```text
+get_student_info()
+```
+
+**Question 2**
+
+> What are the marks of 22CS047?
+
+Expected tools:
+
+```text
+get_student_marks()
+```
+
+**Question 3**
+
+> What is the total and average mark of 22CS045?
+
+Expected tools:
+
+```text
+get_student_marks()
+        ↓
+calculator()
+```
+
+**Question 4**
+
+> Is 22CS045 eligible to pass according to the university rules?
+
+Expected tools:
+
+```text
+get_student_marks()
+        ↓
+get_passing_rules()
+        ↓
+calculator()
+```
+
+### Challenge Question
+
+Ask the agent:
+
+> "I am 22CS045. Tell me my name, department, total marks, average marks, and whether I satisfy the university passing requirements."
+
+The agent should automatically determine that it needs multiple tools:
+
+```text
+get_student_info()
+        ↓
+get_student_marks()
+        ↓
+calculator()
+        ↓
+get_passing_rules()
+        ↓
+Final Answer
+```
+
+### Important Requirement
+
+Do **not** manually call the tools in a fixed sequence.
+
+The student should create an **agent** and allow the LLM to decide:
+
+```text
+User Question
+      ↓
+     LLM
+      ↓
+Which tool is needed?
+      ↓
+    Tool
+      ↓
+   Result
+      ↓
+     LLM
+      ↓
+Do I need another tool?
+      ↓
+    Tool
+      ↓
+    ...
+      ↓
+Final Answer
+```
+
+### Learning Objective
+
+By completing this exercise, you should understand:
+
+* How to create a LangChain tool using `@tool`
+* How tool descriptions help the LLM
+* How type hints create tool input schemas
+* How to create an agent with multiple tools
+* How an agent selects tools
+* How one tool's result can lead to another tool call
+* The difference between a fixed chain and an agentic workflow
